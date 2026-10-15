@@ -7,7 +7,7 @@
 project_name = "dwts-dashboard"
 
 # Use the Central US Azure region.
-location = "centralus"
+location = "francecentral"
 
 # Label these resources as development.
 environment = "dev"

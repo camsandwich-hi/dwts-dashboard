@@ -87,13 +87,10 @@ resource "azurerm_linux_web_app" "dwts_app" {
 
   # Environment variables used by Azure.
   app_settings = {
-
-    # Tell Azure to install dependencies during deployment.
     SCM_DO_BUILD_DURING_DEPLOYMENT = "true"
-
-    # Allow Azure's Python build system to run.
-    ENABLE_ORYX_BUILD = "true"
-  }
+    ENABLE_ORYX_BUILD              = "true"
+    WEBSITES_PORT                  = "8000"
+}
 
   # Add identifying tags.
   tags = {
