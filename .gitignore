@@ -3,3 +3,55 @@ __pycache__/
 .DS_Store
 .streamlit/secrets.toml
 .env
+
+
+# ------------------------------------------
+# TERRAFORM FILES
+# ------------------------------------------
+
+# Ignore Terraform's downloaded providers and local working files.
+.terraform/
+
+# Ignore Terraform state files.
+# These track deployed infrastructure and may contain sensitive data.
+*.tfstate
+*.tfstate.*
+
+# Ignore Terraform crash logs.
+crash.log
+crash.*.log
+
+# Ignore Terraform variable files that may contain secrets.
+# We'll explicitly allow our safe example environment configurations.
+*.tfvars
+*.tfvars.json
+!environments/dev.tfvars
+!environments/prod.tfvars
+
+# Ignore local override files.
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Ignore the default Terraform variables file, which may contain secrets.
+terraform.tfvars
+
+# ------------------------------------------
+# PYTHON FILES
+# ------------------------------------------
+
+# Ignore our Python virtual environment.
+.venv/
+
+# Ignore Python-generated cache folders.
+__pycache__/
+*.pyc
+
+# ------------------------------------------
+# LOCAL SECRETS
+# ------------------------------------------
+
+# Ignore local environment files containing credentials.
+.env
+.env.*
