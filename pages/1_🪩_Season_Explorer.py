@@ -247,7 +247,8 @@ if not weekly_df.empty:
 
         # Customize the chart's axes and tooltip.
         fig.update_layout(
-            yaxis_range=[0, 10],
+            # Allow the chart to accommodate recorded bonus points.
+            yaxis_range=[0, max(10, weekly_df["Average Judge Score"].max() + 0.5)],
             xaxis=dict(dtick=1),
 
             # Show all contestants' scores for the hovered week.
@@ -268,6 +269,107 @@ if not weekly_df.empty:
 
 else:
     st.info("No weekly judges' scores are available for this season.")
+
+
+# --------------------------------------------------
+# SEASON SCORING STATISTICS
+# --------------------------------------------------
+
+st.header("✨ Season Scoring Statistics")
+
+if not weekly_df.empty:
+
+    # Find the contestant with the highest single-week
+    # average judges' score.
+    highest_week = weekly_df.loc[
+        weekly_df["Average Judge Score"].idxmax()
+    ]
+
+    # Calculate each contestant's average score across
+    # all the weeks in which they received valid scores.
+    season_averages = (
+        weekly_df.groupby("Celebrity")["Average Judge Score"]
+        .mean()
+        .sort_values(ascending=False)
+    )
+
+    # Find the contestant with the highest season average.
+    scoring_leader = season_averages.index[0]
+    scoring_leader_average = season_averages.iloc[0]
+
+    # Find each contestant's first and last scored weeks.
+    # Sorting ensures that first() and last() refer to
+    # their actual chronological performances.
+    sorted_scores = weekly_df.sort_values(
+        ["Celebrity", "Week"]
+    )
+
+    improvement = (
+        sorted_scores.groupby("Celebrity")["Average Judge Score"]
+        .agg(["first", "last", "count"])
+    )
+
+    # Only compare contestants with at least two scored weeks.
+    improvement = improvement[
+        improvement["count"] >= 2
+    ].copy()
+
+    # Calculate how much each contestant improved.
+    improvement["Change"] = (
+        improvement["last"] - improvement["first"]
+    )
+
+    # Create three columns for our statistics.
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        # Some recorded weekly scores may include bonus points,
+        # so we do not assume the maximum possible score is 10.
+        st.metric(
+            "🏆 Highest Recorded Weekly Average",
+            f"{highest_week['Average Judge Score']:.2f}"
+        )
+
+        st.caption(
+            f"{highest_week['Celebrity']} — "
+            f"Week {highest_week['Week']}"
+        )
+
+    with col2:
+        if not improvement.empty:
+            most_improved = improvement["Change"].idxmax()
+            biggest_change = improvement.loc[
+                most_improved, "Change"
+            ]
+
+            st.metric(
+                "📈 Most Improved",
+                f"+{biggest_change:.2f}"
+                if biggest_change >= 0
+                else f"{biggest_change:.2f}"
+            )
+            st.caption(most_improved)
+        else:
+            st.metric("📈 Most Improved", "N/A")
+            st.caption("Not enough weekly scores")
+
+    with col3:
+        st.metric(
+            "⭐ Season Scoring Leader",
+            f"{scoring_leader_average:.2f}"
+        )
+        st.caption(scoring_leader)
+
+    # Explain how the statistics are calculated.
+    st.caption(
+        "Statistics use average judges' scores per recorded week. "
+        "Most Improved compares each contestant's first and last "
+        "scored weeks. Season averages include only weeks with "
+        "valid scores and are not adjusted for weeks competed."
+    )
+
+else:
+    st.info("No scoring statistics are available for this season.")
 
 
 # --------------------------------------------------
