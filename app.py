@@ -54,6 +54,22 @@ import plotly.express as px
 # Load the contestant dataset from our data folder.
 dwts = pd.read_csv("data/2026_MCM_Problem_C_Data.csv")
 
+# --------------------------------------------------
+# CLEAN PROFESSIONAL DANCER NAMES
+# --------------------------------------------------
+
+# Some professional dancer names contain extra information
+# in parentheses, such as temporary partner substitutions.
+#
+# Create a new column with only the dancer's name.
+# Keep the original column so we don't lose that information.
+dwts["pro_name"] = (
+    dwts["ballroom_partner"]
+    .str.split("(", n=1, regex=False)
+    .str[0]
+    .str.strip()
+)
+
 # Keep only contestants who finished in first place.
 # Each row represents a celebrity and their professional partner.
 winners = dwts[dwts["placement"] == 1].copy()
@@ -61,7 +77,7 @@ winners = dwts[dwts["placement"] == 1].copy()
 # Count how many winning seasons each professional dancer has.
 # value_counts() counts the number of times each name appears.
 pro_wins = (
-    winners["ballroom_partner"]
+    winners["pro_name"]
     .value_counts()
     .reset_index()
 )
