@@ -268,3 +268,66 @@ if not weekly_df.empty:
 
 else:
     st.info("No weekly judges' scores are available for this season.")
+
+
+# --------------------------------------------------
+# WEEKLY SCORING LEADERBOARD
+# --------------------------------------------------
+
+st.header("🏆 Weekly Scoring Leaderboard")
+
+st.write(
+    "Choose a competition week to see how contestants "
+    "ranked based on their average judges' scores."
+)
+
+# Find all weeks with at least one valid score.
+available_weeks = sorted(weekly_df["Week"].unique()) if not weekly_df.empty else []
+
+if available_weeks:
+
+    # Let visitors choose which week to explore.
+    selected_week = st.selectbox(
+        "Choose a week:",
+        available_weeks
+    )
+
+    # Keep only the scores for the selected week.
+    week_data = weekly_df[
+        weekly_df["Week"] == selected_week
+    ].copy()
+
+    # Sort contestants from highest to lowest score.
+    week_data = week_data.sort_values(
+        by="Average Judge Score",
+        ascending=False
+    )
+
+    # Create ranking numbers, giving tied scores
+    # the same rank.
+    week_data["Rank"] = (
+        week_data["Average Judge Score"]
+        .rank(method="min", ascending=False)
+        .astype(int)
+    )
+
+    # Reorder the columns for a cleaner table.
+    leaderboard = week_data[
+        ["Rank", "Celebrity", "Average Judge Score"]
+    ].copy()
+
+    # Display the scores to two decimal places.
+    st.dataframe(
+        leaderboard,
+        use_container_width=True,
+        hide_index=True,
+        column_config={
+            "Average Judge Score": st.column_config.NumberColumn(
+                "Average Judge Score",
+                format="%.2f"
+            )
+        }
+    )
+
+else:
+    st.info("No weekly scoring data is available.")
