@@ -12,47 +12,65 @@ st.set_page_config(
     layout="wide"
 )
 
+
 # --------------------------------------------------
-# WEBSITE HEADER
+# HOMEPAGE HEADER
 # --------------------------------------------------
-# Display the main title and description.
+
+# Introduce visitors to the dashboard with a
+# ballroom-inspired welcome message.
+st.markdown("### ✨ WELCOME TO THE BALLROOM")
+
 st.title("Dancing with the Data 🪩")
 
 st.subheader("The statistics behind the Mirrorball Trophy")
 
 st.write(
-    "Explore the celebrities, professional dancers, "
-    "judges' scores, and results from Dancing with the Stars!"
+    "Step into the ballroom and explore the celebrities, "
+    "professional dancers, judges' scores, and unforgettable "
+    "moments from Dancing with the Stars!"
 )
 
-# --------------------------------------------------
-# INTERACTIVE SEASON FILTER
-# --------------------------------------------------
-# Create a dropdown menu with seasons 1 through 34.
-# range(1, 35) includes 1 but stops before 35.
-# We'll connect this to real data later.
-
-season = st.selectbox(
-    "Choose a season:",
-    ["All Seasons"] + list(range(1, 35))
-)
-
-# Show the user's selected season.
-st.write(f"You selected: {season}")
+# Add a divider between the introduction and statistics.
+st.divider()
 
 
 # --------------------------------------------------
-# MIRRORBALL TROPHY LEADERBOARD
+# DASHBOARD OVERVIEW
 # --------------------------------------------------
 
-# Import Pandas to read and analyze our DWTS dataset.
+# Import Pandas to work with our DWTS dataset.
 import pandas as pd
 
 # Import Plotly Express to create interactive charts.
 import plotly.express as px
 
-# Load the contestant dataset from our data folder.
+# Load our contestant dataset.
 dwts = pd.read_csv("data/2026_MCM_Problem_C_Data.csv")
+
+# Calculate statistics directly from the dataset.
+total_seasons = dwts["season"].nunique()
+total_contestants = len(dwts)
+total_pros = dwts["ballroom_partner"].nunique()
+
+# Display three statistics side by side.
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    st.metric("🪩 Seasons", total_seasons)
+
+with col2:
+    st.metric("⭐ Contestant Records", total_contestants)
+
+with col3:
+    st.metric("💃 Professional Dancers", total_pros)
+
+st.divider()
+
+# --------------------------------------------------
+# MIRRORBALL TROPHY LEADERBOARD
+# --------------------------------------------------
+
 
 # --------------------------------------------------
 # CLEAN PROFESSIONAL DANCER NAMES

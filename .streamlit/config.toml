@@ -1,0 +1,24 @@
+
+# --------------------------------------------------
+# DANCING WITH THE DATA - STREAMLIT THEME
+# --------------------------------------------------
+
+[theme]
+
+# Use a dark theme inspired by the DWTS ballroom.
+base = "dark"
+
+# Gold accents for buttons, sliders, and selected elements.
+primaryColor = "#D4AF37"
+
+# Main page background: deep midnight black.
+backgroundColor = "#0E0B16"
+
+# Sidebar and secondary backgrounds: dark purple.
+secondaryBackgroundColor = "#21182F"
+
+# Main text color: soft white.
+textColor = "#F8F5FF"
+
+# Use a clean, modern font throughout the dashboard.
+font = "sans serif"
