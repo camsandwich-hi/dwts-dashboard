@@ -50,8 +50,16 @@ dwts["pro_name"] = (
 # --------------------------------------------------
 # PAGE HEADER
 # --------------------------------------------------
+# Use a consistent gold section label across the dashboard.
+st.markdown(
+    "<p style='color: #D4AF37; font-size: 14px; "
+    "font-weight: 600; letter-spacing: 3px;'>"
+    "EXPLORE THE BALLROOM"
+    "</p>",
+    unsafe_allow_html=True
+)
 
-st.title("🪩 DWTS Season Explorer")
+st.title("Season Explorer")
 
 st.write(
     "Explore contestants, professional partners, "
@@ -126,7 +134,7 @@ if not winner_data.empty:
 # CONTESTANT STANDINGS
 # --------------------------------------------------
 
-st.header("🏅 Contestant Standings")
+st.header("Contestant Standings")
 
 # Keep the columns most useful to visitors.
 standings = season_data[
@@ -167,7 +175,7 @@ st.dataframe(
 # WEEKLY JUDGES' SCORE ANALYSIS
 # --------------------------------------------------
 
-st.header("📈 Weekly Judges' Scores")
+st.header("Weekly Judges' Scores")
 
 st.write(
     "See how contestants' average judges' scores changed "
@@ -242,8 +250,20 @@ if not weekly_df.empty:
             y="Average Judge Score",
             color="Celebrity",
             markers=True,
-            title=f"Season {selected_season}: Weekly Score Trends"
-        )
+            title=f"Season {selected_season}: Weekly Score Trends",
+            color_discrete_sequence=[
+    "#D4AF37",  # Mirrorball gold
+    "#B9A3D4",  # Soft lavender
+    "#8C6BB1",  # Muted purple
+    "#E8C875",  # Champagne gold
+    "#D18B9B",  # Dusty rose
+    "#7FB7B0",  # Muted teal
+    "#A8A4C8",  # Periwinkle
+    "#C58B62",  # Warm bronze
+    "#D6B4C8",  # Soft mauve
+    "#8BA6C9",  # Muted blue
+            ],
+    )
 
         # Customize the chart's axes and tooltip.
         fig.update_layout(
@@ -275,7 +295,7 @@ else:
 # SEASON SCORING STATISTICS
 # --------------------------------------------------
 
-st.header("✨ Season Scoring Statistics")
+st.header("Season Scoring Statistics")
 
 if not weekly_df.empty:
 
@@ -326,7 +346,7 @@ if not weekly_df.empty:
         # Some recorded weekly scores may include bonus points,
         # so we do not assume the maximum possible score is 10.
         st.metric(
-            "🏆 Highest Recorded Weekly Average",
+            "Highest Recorded Weekly Average",
             f"{highest_week['Average Judge Score']:.2f}"
         )
 
@@ -343,7 +363,7 @@ if not weekly_df.empty:
             ]
 
             st.metric(
-                "📈 Most Improved",
+                "Most Improved",
                 f"+{biggest_change:.2f}"
                 if biggest_change >= 0
                 else f"{biggest_change:.2f}"
@@ -355,7 +375,7 @@ if not weekly_df.empty:
 
     with col3:
         st.metric(
-            "⭐ Season Scoring Leader",
+            "Season Scoring Leader",
             f"{scoring_leader_average:.2f}"
         )
         st.caption(scoring_leader)
@@ -376,7 +396,7 @@ else:
 # WEEKLY SCORING LEADERBOARD
 # --------------------------------------------------
 
-st.header("🏆 Weekly Scoring Leaderboard")
+st.header("Weekly Scoring Leaderboard")
 
 st.write(
     "Choose a competition week to see how contestants "
