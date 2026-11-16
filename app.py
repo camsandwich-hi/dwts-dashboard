@@ -95,6 +95,7 @@ st.write(
 st.divider()
 
 
+
 # --------------------------------------------------
 # EXPLORE THE BALLROOM
 # --------------------------------------------------
@@ -104,26 +105,54 @@ st.header("Explore the Ballroom")
 
 st.write(
     "Discover the stories behind the statistics. "
-    "Start by exploring individual seasons, contestants, "
-    "and weekly performances."
+    "Explore individual seasons, professional dancers, "
+    "and their journeys to the Mirrorball Trophy."
 )
 
-# Create a section for our Season Explorer page.
-with st.container(border=True):
+# Create two columns so our explorer cards appear side by side.
+season_col, pro_col = st.columns(2, gap="medium")
 
-    st.subheader("Season Explorer")
+# --------------------------------------------------
+# SEASON EXPLORER CARD
+# --------------------------------------------------
 
-    st.write(
-        "Explore every season's contestants, professional "
-        "partners, final standings, and weekly judges' scores."
-    )
+with season_col:
+    with st.container(border=True):
 
-    # Open our existing Season Explorer page.
-    st.page_link(
-        "pages/1_Season_Explorer.py",
-        label="Explore Seasons",
-        icon=":material/arrow_forward:"
-    )
+        st.subheader("Season Explorer")
+
+        st.write(
+            "Explore contestants, final standings, professional "
+            "partners, and weekly scores across every season."
+        )
+
+        # Navigate to the Season Explorer page.
+        st.page_link(
+            "pages/1_Season_Explorer.py",
+            label="Explore Seasons",
+            icon=":material/arrow_forward:"
+        )
+
+# --------------------------------------------------
+# PROFESSIONAL DANCER EXPLORER CARD
+# --------------------------------------------------
+
+with pro_col:
+    with st.container(border=True):
+
+        st.subheader("Pro Dancer Explorer")
+
+        st.write(
+            "Explore professional dancers' careers, celebrity "
+            "partners, competition results, and Mirrorball wins."
+        )
+
+        # Navigate to the Professional Dancer Explorer page.
+        st.page_link(
+            "pages/2_Professional_Dancer_Explorer.py",
+            label="Explore Professionals",
+            icon=":material/arrow_forward:"
+        )
 
 st.divider()
 
