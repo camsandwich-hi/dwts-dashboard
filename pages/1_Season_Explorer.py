@@ -12,6 +12,8 @@ import pandas as pd
 # Plotly Express creates interactive charts.
 import plotly.express as px
 
+# Import our shared professional dancer name cleaning function.
+from data_utils import clean_professional_names
 # --------------------------------------------------
 # PAGE CONFIGURATION
 # --------------------------------------------------
@@ -38,14 +40,11 @@ def load_data():
 dwts = load_data()
 
 # Create a cleaned professional dancer name column.
-# Remove temporary substitution notes in parentheses.
-dwts["pro_name"] = (
+# Use our shared function to keep names consistent across pages.
+# The original ballroom_partner column remains unchanged.
+dwts["pro_name"] = clean_professional_names(
     dwts["ballroom_partner"]
-    .str.split("(", n=1, regex=False)
-    .str[0]
-    .str.strip()
 )
-
 
 # --------------------------------------------------
 # PAGE HEADER

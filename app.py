@@ -12,6 +12,8 @@ import pandas as pd
 # Plotly Express creates interactive charts.
 import plotly.express as px
 
+# Import our shared function for cleaning professional dancer names.
+from data_utils import clean_professional_names
 
 # --------------------------------------------------
 # PAGE CONFIGURATION
@@ -37,21 +39,11 @@ dwts = pd.read_csv("data/2026_MCM_Problem_C_Data.csv")
 # CLEAN PROFESSIONAL DANCER NAMES
 # --------------------------------------------------
 
-# Some partner names contain notes in parentheses,
-# such as temporary substitutions during a season.
-#
-# Remove these notes so we can count dancers and
-# calculate Mirrorball wins more consistently.
-#
+# Use our shared cleaning function to standardize names.
 # Keep the original ballroom_partner column unchanged.
-
-dwts["pro_name"] = (
+dwts["pro_name"] = clean_professional_names(
     dwts["ballroom_partner"]
-    .str.split("(", n=1, regex=False)
-    .str[0]
-    .str.strip()
 )
-
 
 # --------------------------------------------------
 # CALCULATE DASHBOARD STATISTICS

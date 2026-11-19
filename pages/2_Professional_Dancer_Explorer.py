@@ -2,6 +2,8 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+# Import our shared function for cleaning professional dancer names.
+from data_utils import clean_professional_names
 
 # Configure the page.
 st.set_page_config(
@@ -17,6 +19,8 @@ def load_data():
     return pd.read_csv("data/2026_MCM_Problem_C_Data.csv")
 
 df = load_data()
+
+
 
 # Page heading.
 st.markdown(
@@ -35,12 +39,14 @@ st.write(
 st.divider()
 
 
-# Clean professional dancer names.
-# Remove notes in parentheses, such as special guest appearances.
-df["professional_dancer"] = (
+# --------------------------------------------------
+# CLEAN PROFESSIONAL DANCER NAMES
+# --------------------------------------------------
+
+# Use our shared cleaning function to standardize names.
+# Keep the original ballroom_partner column unchanged.
+df["professional_dancer"] = clean_professional_names(
     df["ballroom_partner"]
-    .str.replace(r"\s*\(.*?\)", "", regex=True)
-    .str.strip()
 )
 
 # Create an alphabetical list of professional dancers.
